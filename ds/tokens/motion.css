@@ -1,0 +1,13 @@
+/* Motion should feel like a lowered heart rate: slow-ish, soft ease, no bounce, no spring.
+   Nothing in this brand pops, slides fast, or draws attention to itself.
+   --kit-ease is the house curve (gentle, no overshoot). dur-1 small controls,
+   dur-2 the default, dur-3 entrances and reveals. */
+:root{
+  --kit-ease:cubic-bezier(.32,.72,.32,1); /* @kind other */
+  --kit-ease-out:cubic-bezier(.16,.84,.44,1); /* @kind other */
+  --kit-dur-1:160ms; /* @kind other */
+  --kit-dur-2:280ms; /* @kind other */
+  --kit-dur-3:520ms; /* @kind other */
+  --kit-transition:all var(--kit-dur-2) var(--kit-ease); /* @kind other */
+}
+@media (prefers-reduced-motion:reduce){:root{--kit-dur-1:0ms; /* @kind other */ --kit-dur-2:0ms; /* @kind other */ --kit-dur-3:0ms; /* @kind other */}}

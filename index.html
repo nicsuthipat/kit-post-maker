@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KIT Post Maker</title>
+
+<!-- design system: the @import chain (fonts, colours, type, spacing, base) + the artboard system -->
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="ds/styles.css">
+<link rel="stylesheet" href="ds/social/social.css">
+<!-- tool chrome only -->
+<link rel="stylesheet" href="tool.css">
+</head>
+<body>
+
+<div class="panel">
+  <h1>KIT Post Maker</h1>
+  <p class="sub">เส้น สี ฟอนต์ และโลโก้ ถูกล็อกไว้ตาม design system — แก้ได้แค่ข้อความ</p>
+
+  <div class="modeTabs">
+    <button id="mode-single" aria-pressed="true">ภาพเดี่ยว</button>
+    <button id="mode-post" aria-pressed="false">โพสต์ทั้งชุด (หลายหน้า)</button>
+  </div>
+
+  <!-- ══════════════════════ SINGLE ══════════════════════ -->
+  <div id="singlePanel">
+    <p class="sub">เลือกรูปแบบ · เลือกขนาด · เลือกพื้นหลัง · พิมพ์ข้อความ · ดาวน์โหลดภาพเดียว</p>
+
+    <label for="archetype">รูปแบบเนื้อหา</label>
+    <select id="archetype"></select>
+
+    <label for="board">ขนาด / แพลตฟอร์ม</label>
+    <select id="board"></select>
+
+    <label for="ground">พื้นหลัง</label>
+    <select id="ground"></select>
+    <p class="hint">ผสมประมาณ 7 อ่อน : 2 กลาง : 1 เข้ม ต่อเดือน · เข้มเหมาะกับข้อความสั้นเท่านั้น</p>
+
+    <div id="dotsRow">
+      <label for="dots">จุดตกแต่ง</label>
+      <select id="dots"></select>
+    </div>
+
+    <div id="frameRow">
+      <label class="toggle"><input type="checkbox" id="frame" checked> เส้นโค้งล้อมกรอบ (framed)</label>
+    </div>
+
+    <div id="slots"></div>
+
+    <label class="toggle"><input type="checkbox" id="guides"> แสดงกรอบพื้นที่ข้อความ</label>
+
+    <div class="note" id="overflow" hidden>
+      ข้อความยาวเกินพื้นที่ที่กำหนด — ตัดให้สั้นลง หรือเปลี่ยนไปใช้เทมเพลตที่ยาวกว่า / ทำเป็น "โพสต์ทั้งชุด"
+      <br>อย่าลดขนาดตัวอักษร
+    </div>
+    <div class="note" id="tplwarn" hidden></div>
+
+    <div class="actions">
+      <button id="save">ดาวน์โหลด PNG</button>
+      <button id="copylink" class="secondary">คัดลอกลิงก์</button>
+    </div>
+    <p id="status"></p>
+  </div>
+
+  <!-- ══════════════════════ POST (multi-page) ══════════════════════ -->
+  <div id="postPanel" hidden>
+    <p class="sub">แพลตฟอร์ม → ประเภทโพสต์ → จำนวนหน้า → เนื้อหาแต่ละหน้า → ดาวน์โหลดทั้งชุดเป็น ZIP<br>
+    พื้นหลังและกรอบเส้นล็อกให้เหมือนกันทุกหน้า (ตามกฎ design system: ห้ามสลับพื้นหลังใน carousel เดียวกัน)</p>
+
+    <label for="platform">แพลตฟอร์ม</label>
+    <select id="platform"></select>
+
+    <label for="postType">ประเภทโพสต์</label>
+    <select id="postType"></select>
+
+    <label for="pageCount">จำนวนหน้า (1–8)</label>
+    <input type="number" id="pageCount" min="1" max="8" value="1">
+
+    <label for="carouselGround">พื้นหลัง (ทั้งโพสต์)</label>
+    <select id="carouselGround"></select>
+
+    <label class="toggle"><input type="checkbox" id="carouselFrame" checked> เส้นโค้งล้อมกรอบ (framed) — ทั้งโพสต์</label>
+
+    <label for="sharedEyebrow">บรรทัดนำ ใช้ซ้ำทุกหน้า (ไม่บังคับ)</label>
+    <input type="text" id="sharedEyebrow" placeholder="เช่น คุยกับคนแปลกหน้าให้ไม่เหนื่อย">
+
+    <label for="endPage">หน้าปิดท้าย</label>
+    <select id="endPage">
+      <option value="none">ไม่มี</option>
+      <option value="logo">โลโก้เต็มหน้า</option>
+      <option value="logo-qr">โลโก้ + LINE QR</option>
+    </select>
+    <div id="endCaptionRow" hidden>
+      <label for="endCaption">ข้อความใต้โลโก้ (ไม่บังคับ)</label>
+      <input type="text" id="endCaption" placeholder="ค่าเริ่มต้นจาก design system">
+    </div>
+
+    <div id="pagesForm"></div>
+
+    <div class="actions">
+      <button id="saveZip">ดาวน์โหลดทั้งโพสต์ (ZIP)</button>
+    </div>
+    <p id="status2"></p>
+  </div>
+</div>
+
+<div class="previewWrap">
+  <div id="stage"></div>
+  <div id="carouselStage" class="carouselStage" hidden></div>
+</div>
+
+<!-- the design system's machine-readable social-post spec: grounds, dot arrangements,
+     curve paths, mark zones, end pages. Sets window.KIT_VARIANTS — no fetch needed. -->
+<script src="ds/social/variants.js"></script>
+<script src="vendor/modern-screenshot.js"></script>
+<script src="vendor/jszip.min.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

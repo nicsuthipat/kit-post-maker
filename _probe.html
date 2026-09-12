@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>probe</title>
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="ds/styles.css">
+<link rel="stylesheet" href="ds/social/social.css">
+<style>
+  html, body { margin: 0; background: #fff; }
+  #host { position: absolute; left: 0; top: 0; }
+</style>
+</head>
+<body>
+<div id="host"></div>
+<script src="ds/social/variants.js"></script>
+<script type="module">
+import { renderBoard } from './render.js';
+const u = new URL(location.href);
+const dec = (s) => JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g,'+').replace(/_/g,'/')))));
+const post = dec(u.searchParams.get('d'));
+const { board, w, h } = renderBoard(post, { scale: 1, guides: u.searchParams.has('guides') });
+document.getElementById('host').append(board);
+document.body.style.width = w + 'px';
+document.body.style.height = h + 'px';
+await document.fonts.ready;
+document.title = 'ready';
+</script>
+</body>
+</html>

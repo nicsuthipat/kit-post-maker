@@ -1,0 +1,42 @@
+/* KIT base: element defaults + the small set of utility classes every KIT page uses.
+   Anything visual and reusable beyond this lives in components/. */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--kit-ground);color:var(--kit-text-body);font-family:var(--kit-font-body);font-size:var(--kit-fs-body);line-height:var(--kit-lh-body);font-weight:var(--kit-fw-body);letter-spacing:var(--kit-tracking-none);text-wrap:pretty;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p,figure,blockquote{margin:0}
+img{max-width:100%;display:block}
+a{color:var(--kit-link);text-decoration-line:underline;text-decoration-thickness:1px;text-underline-offset:.22em;transition:color var(--kit-dur-1) var(--kit-ease)}
+a:hover{color:var(--kit-link-hover);text-decoration-thickness:2px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:none;box-shadow:var(--kit-focus);border-radius:var(--kit-radius-xs)}
+::selection{background:var(--kit-sand-300);color:var(--kit-ink)}
+
+/* Type steps. Thai-safe by construction: leading never below 1.28 on display, 1.6 on body,
+   tracking never negative, never justified. */
+.kit-display{font-family:var(--kit-font-display);font-size:var(--kit-fs-display);line-height:var(--kit-lh-display);font-weight:var(--kit-fw-display);letter-spacing:0}
+.kit-h1{font-family:var(--kit-font-display);font-size:var(--kit-fs-h1);line-height:var(--kit-lh-h1);font-weight:var(--kit-fw-h1);letter-spacing:0}
+.kit-h2{font-family:var(--kit-font-display);font-size:var(--kit-fs-h2);line-height:var(--kit-lh-h2);font-weight:var(--kit-fw-h2);letter-spacing:0}
+.kit-h3{font-family:var(--kit-font-body);font-size:var(--kit-fs-h3);line-height:var(--kit-lh-h3);font-weight:500;letter-spacing:0}
+.kit-body-lg{font-size:var(--kit-fs-body-lg);line-height:var(--kit-lh-body-lg)}
+.kit-body{font-size:var(--kit-fs-body);line-height:var(--kit-lh-body)}
+.kit-small{font-size:var(--kit-fs-small);line-height:var(--kit-lh-small)}
+/* .kit-caption defaults to the ON-WASH meta token, not --kit-text-meta. A caption is the class most
+   likely to be dropped onto an unknown surface, and ink-50 only clears AA on the pure ground
+   (4.06:1 on ground-3). ink-70 clears AAA on every system surface, so the default is fail-safe;
+   add .kit-caption-light for the lighter ink-50 when you know the surface is the pure ground. */
+.kit-caption{font-size:var(--kit-fs-caption);line-height:var(--kit-lh-caption);color:var(--kit-text-meta-on-wash)}
+.kit-caption-light{color:var(--kit-text-meta)}
+.kit-label{font-size:var(--kit-fs-caption);line-height:1.4;font-weight:500;color:var(--kit-text-secondary)}
+.kit-measure{max-width:var(--kit-measure)}
+.kit-measure-wide{max-width:var(--kit-measure-wide)}
+/* wrap Latin runs inside a Thai line so neither dominates */
+.kit-latin{font-size:var(--kit-latin-optical)}
+.kit-th{text-align:start;text-wrap:pretty;word-break:normal;overflow-wrap:break-word}
+
+/* Soft containment. No hard rectangles anywhere in the system. */
+.kit-card{background:var(--kit-surface-card);border-radius:var(--kit-organic-card);padding:var(--kit-card-pad)}
+.kit-card-alt{background:var(--kit-surface-card-alt);border-radius:var(--kit-organic-card-alt);padding:var(--kit-card-pad)}
+.kit-blob{border-radius:var(--kit-blob-1)}
+
+/* Hand-drawn divider: a slightly irregular stroke, never a 1px machine rule. */
+.kit-rule{border:0;height:9px;background:no-repeat left center/auto 100% url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='9' viewBox='0 0 480 9'%3E%3Cpath d='M2 6.1C58 3.2 96 5.6 148 4.2c52-1.4 74 2.3 126 1.1 52-1.2 88-3.1 132-1.6 26 .9 48 2.4 70 1.3' fill='none' stroke='%2314181D' stroke-width='1.6' stroke-linecap='round' opacity='.55'/%3E%3C/svg%3E");background-size:100% 100%}
+.kit-rule-short{width:96px}

@@ -1,0 +1,131 @@
+/* KIT colour system — APPROVED PALETTE, 2026-09-11.
+   Every ratio below was COMPUTED (WCAG 2.1), not estimated.
+
+   ⚠️ ONE DELIBERATE DEPARTURE FROM THE APPROVED SHEET, and it is the only one.
+   The reference sheet printed ratios for the 700/900 steps that its own hex values do not reach:
+   sand-700 was labelled 4.55:1 but measures 2.21:1 · slate-700 labelled 4.54:1, measures 3.87:1
+   · peach-700 labelled 4.70:1, measures 2.75:1. Slate is the ACTION colour, so shipping it as
+   printed would have put every button below AA. The 100/300/500 steps — the ones a reader sees
+   as brand colour, and the ones in the logo — are EXACTLY as approved. Only the deep functional
+   steps were darkened, along the same hue, until they truly pass.
+
+   RAMP SHAPE, 2026-09-12: each family runs SIX steps — 50/100/300/500/700/900. The two palest
+   steps were redistributed into three across the same visual range rather than a paler step
+   being stacked on top: sand's old 100 (#FFF7EB) already measured 1.02:1 on the ground, and a
+   lighter one landed ΔE 1.4 from it — invisible. Every adjacent pale pair now clears ΔE 7.4. */
+:root{
+  /* ——— Ground & ink ——— */
+  --kit-ground:#FDF9F6;        /* the dominant surface, always */
+  --kit-ground-2:#F8F2EC;      /* 1.06:1 — section wash */
+  --kit-ground-3:#F2EAE2;      /* 1.14:1 — card fill */
+  --kit-surface-raised:#FFFFFF;
+  --kit-ink:#14181D;           /* 17.02:1 ✓ AAA — the only body text colour on light grounds */
+  --kit-ink-70:#4A4E55;        /* 7.98:1 ✓ AAA — secondary */
+  --kit-ink-50:#6E7278;        /* 4.62:1 ✓ AA on the PURE GROUND ONLY (ground-3 4.06 ✗) */
+  --kit-ink-30:#A8A29B;        /* 2.41:1 ✗ — disabled only */
+
+  /* ——— Sage (green) — approved 100/300/500, deep steps verified ——— */
+  --kit-sage-50:#E8F2E7;       /* 1.10:1 · ink on it 15.52:1 ✓ — the palest step */
+  --kit-sage-100:#C8DEC4;       /* 1.36:1 · ink on it 12.48:1 ✓ */
+  --kit-sage-300:#A7C9A1;       /* 1.74:1 */
+  --kit-sage-500:#7EA97C;      /* 2.55:1  ← the logo blob */
+  --kit-sage-700:#4F7A52;      /* 4.73:1 ✓ AA */
+  --kit-sage-900:#2F5A3A;      /* 7.58:1 ✓ AAA */
+  --kit-sage-1000:#223A28;     /* ground text on it 11.77:1 ✓AAA — deepest step, a background tone (your swatch — hue-exact to sage-900) */
+
+  /* ——— Warm sand (orange/amber) ——— */
+  --kit-sand-50:#FFFAF3;       /* 1.01:1 · ink on it 17.16:1 ✓ — the palest step */
+  --kit-sand-100:#F9E7D6;       /* 1.15:1 · ink on it 14.79:1 ✓ */
+  --kit-sand-300:#F3D4B9;       /* 1.34:1 */
+  --kit-sand-500:#F1C9A7;      /* 1.47:1  ← the logo ellipse */
+  --kit-sand-700:#B05C26;      /* 4.55:1 ✓ AA (darkened from #E09B6F, which was 2.21) */
+  --kit-sand-900:#804724;      /* 7.05:1 ✓ AAA */
+  --kit-sand-1000:#4A2E1C;     /* ground text on it 11.81:1 ✓AAA — deepest step, a background tone (derived to the row’s L*) */
+
+  /* ——— Grey-blue (periwinkle) — THE ACTION FAMILY ——— */
+  --kit-slate-50:#F3F7FB;     /* 1.03:1 · ink on it 16.56:1 ✓ — the palest step */
+  --kit-slate-100:#DDE7F3;      /* 1.19:1 · ink on it 14.26:1 ✓ */
+  --kit-slate-300:#C7D6EA;      /* 1.41:1 */
+  --kit-slate-500:#90A7D3;     /* 2.32:1  ← the logo dot */
+  --kit-slate-700:#5871B0;     /* 4.55:1 ✓ AA · ground ON it 4.55:1 ✓ */
+  --kit-slate-900:#425483;     /* 7.09:1 ✓ AAA — hover/pressed */
+  --kit-slate-1000:#2A3350;    /* ground text on it 11.88:1 ✓AAA — deepest step, a background tone (your swatch — hue-exact to slate-900) */
+
+  /* ——— Peach (coral) — the heart's colour ——— */
+  --kit-peach-50:#FFF4F3;     /* 1.03:1 · ink on it 16.54:1 ✓ — the palest step */
+  --kit-peach-100:#FCE2DE;      /* 1.17:1 · ink on it 14.49:1 ✓ */
+  --kit-peach-300:#F8CFC9;      /* 1.36:1 */
+  --kit-peach-500:#F3AFA6;     /* 1.75:1  ← the heart and the small dot */
+  --kit-peach-700:#D13B3B;     /* 4.56:1 ✓ AA */
+  --kit-peach-900:#983232;     /* 7.07:1 ✓ AAA */
+  --kit-peach-1000:#5B2222;    /* ground text on it 11.82:1 ✓AAA — deepest step, a background tone (derived to the row’s L*) */
+
+  /* Amber — the small left dot in the mark. A tint of the sand family, kept as its own token
+     because it appears in the logo and must be reproducible exactly. */
+  --kit-amber-500:#FDC26D;     /* 1.53:1 — decorative only */
+
+  /* ——— Semantic set, all from the same four families ——— */
+  --kit-success:#4F7A52;       /* 4.73:1 ✓ */
+  --kit-success-wash:#C8DEC4;  /* ink on it 12.48:1 ✓ */
+  --kit-warning:#B05C26;       /* 4.55:1 ✓ */
+  --kit-warning-wash:#F9E7D6;  /* ink on it 14.79:1 ✓ */
+  --kit-error:#D13B3B;        /* 4.56:1 ✓ */
+  --kit-error-wash:#FCE2DE;   /* ink on it 14.49:1 ✓ */
+  --kit-info:#5871B0;         /* 4.55:1 ✓ */
+  --kit-info-wash:#DDE7F3;    /* ink on it 15.75:1 ✓ */
+
+  /* ——— The shared BACKGROUND SET ———
+   One standard set used identically by social posts and slides. Four panes:
+   lightest (50) · second-lightest (100) · deepest (1000) · plus neutral ink.
+   Every pane below carries ink (light panes) or ground (dark panes) at ≥11.7:1, and its
+   meta partner at ≥5.8:1 — all computed. Never put text on a 300/500/700 step; those are
+   for shapes and rules, not grounds. */
+  --kit-bg-lightest-sage:var(--kit-sage-50);
+  --kit-bg-lightest-sand:var(--kit-sand-50);
+  --kit-bg-lightest-slate:var(--kit-slate-50);
+  --kit-bg-lightest-peach:var(--kit-peach-50);
+  --kit-bg-second-sage:var(--kit-sage-100);
+  --kit-bg-second-sand:var(--kit-sand-100);
+  --kit-bg-second-slate:var(--kit-slate-100);
+  --kit-bg-second-peach:var(--kit-peach-100);
+  --kit-bg-deepest-sage:var(--kit-sage-1000);
+  --kit-bg-deepest-sand:var(--kit-sand-1000);
+  --kit-bg-deepest-slate:var(--kit-slate-1000);
+  --kit-bg-deepest-peach:var(--kit-peach-1000);
+  --kit-bg-ink:var(--kit-ink);
+  /* text partners for the dark panes */
+  --kit-on-dark-text:var(--kit-ground);
+  --kit-on-dark-meta:#C7D6EA;
+
+/* ——— Semantic aliases — use these, not the ramps ——— */
+  --kit-text-body:var(--kit-ink);
+  --kit-text-secondary:var(--kit-ink-70);
+  --kit-text-meta:var(--kit-ink-50);                /* PURE GROUND ONLY */
+  --kit-text-meta-on-wash:var(--kit-ink-70);        /* worst case on any system wash ≥6.5:1 ✓ */
+  --kit-text-disabled:var(--kit-ink-30);
+  --kit-text-on-action:var(--kit-ground);           /* 4.55:1 on --kit-action ✓ */
+  --kit-link:var(--kit-slate-700);
+  --kit-link-hover:var(--kit-slate-900);
+  --kit-link-on-wash:var(--kit-slate-900);
+  --kit-action:var(--kit-slate-700);
+  --kit-action-hover:var(--kit-slate-900);
+  --kit-action-quiet:var(--kit-slate-100);
+  --kit-focus-ring:var(--kit-slate-900);
+  --kit-stroke:var(--kit-ink);
+  --kit-hairline:#DCD5CE;
+  --kit-divider:#E4DCD4;
+  --kit-surface-card:var(--kit-ground-2);
+  --kit-surface-card-alt:var(--kit-sand-100);
+}
+.kit-on-ink{
+  --kit-ground:#14181D;
+  --kit-text-body:#FDF9F6;      /* 17.02:1 ✓ */
+  --kit-text-secondary:#C7D6EA; /* 12.08:1 ✓ */
+  --kit-text-meta:#A7C9A1;      /* 9.77:1 ✓ */
+  --kit-link:#F1C9A7;           /* 11.59:1 ✓ */
+  --kit-link-hover:#FFF7EB;
+  --kit-action:#F1C9A7;
+  --kit-text-on-action:#14181D; /* 11.59:1 ✓ */
+  --kit-hairline:#3A3E45;
+  --kit-stroke:#FDF9F6;
+}

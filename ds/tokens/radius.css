@@ -1,0 +1,17 @@
+/* No sharp corners anywhere. A box says "category", a curve says "shelter".
+   The organic radii are deliberately unequal — machine-perfect geometry is off-brand. */
+:root{
+  --kit-radius-xs:8px;    /* inputs, chips — the smallest we ever go */
+  --kit-radius-sm:14px;
+  --kit-radius-md:20px;
+  --kit-radius-lg:28px;
+  --kit-radius-xl:40px;
+  --kit-radius-pill:999px;
+
+  /* Organic blobs — asymmetric radii. Use for card grounds and containment shapes. */
+  --kit-blob-1:62% 38% 55% 45% / 48% 55% 45% 52%; /* @kind radius */
+  --kit-blob-2:38% 62% 45% 55% / 58% 42% 58% 42%; /* @kind radius */
+  --kit-blob-3:50% 50% 40% 60% / 60% 45% 55% 40%; /* @kind radius */
+  --kit-organic-card:36px 44px 40px 48px; /* @kind radius */
+  --kit-organic-card-alt:48px 36px 46px 38px; /* @kind radius */
+}

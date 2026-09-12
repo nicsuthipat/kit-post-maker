@@ -1,0 +1,143 @@
+/* KIT social artboard system — production tool, not a mockup.
+   Every board is an EXACT-PIXEL container. The preview scale is a transform only:
+   the board itself is always its true size, so a 100% screenshot is a real asset.
+
+   One unit system: each board sets --w/--h; --u = 1px at a 1080px canvas, so every
+   size in the frame is written once and holds at 320px, 1080px, 1920px and 2500px. */
+
+.kit-stage{--s:.34;display:flex;flex-direction:column;gap:64px;align-items:flex-start}
+.kit-frame{position:relative;width:calc(var(--w) * var(--s));height:calc(var(--h) * var(--s));flex:0 0 auto}
+.kit-board{--u:calc(var(--w) / 1080);--uv:calc(var(--h) / 1350);--ut:min(var(--u),var(--uv));position:absolute;top:0;left:0;width:var(--w);height:var(--h);transform:scale(var(--s));transform-origin:0 0;background:var(--kit-sand-50);overflow:hidden;font-family:var(--kit-font-body);color:var(--kit-ink)}
+/* ——— GROUND ————————————————————————————————————————————————————————————————
+   The default board ground is sand-50 #FFFAF3 — a MEMBER of the shared 13-pane background
+   set that social posts and slides both draw from (social/variants.json → grounds).
+   #FDF9F6 is the page/app surface and is deliberately NOT a post pane: a board painted with
+   it would disagree with the slides, the 107 blank PNGs and the manifest. Ink on sand-50
+   measures 17.16:1, marginally better than on #FDF9F6.
+
+   To put a board on any other pane, set its background inline from the manifest — each pane
+   is a package carrying its own text, meta, curve, CTA and chip colours, all measured
+   together. §5 of social-templates.html renders all thirteen.
+
+   .on-ink is kept as a shorthand for the neutral dark pane, since several boards use it. */
+.kit-board.on-ink{background:var(--kit-ink);color:var(--kit-ground)}
+.kit-board.on-ink .eyebrow,.kit-board.on-ink .kicker,.kit-board.on-ink .meta,.kit-board.on-ink .body-xs{color:#C0C1C7}
+.kit-cta.ink{background:var(--kit-ink);color:var(--kit-ground)}
+.kit-cta.sand{background:var(--kit-sand-500);color:var(--kit-ink)}
+.kit-board.on-ink .kit-chip{background:#2A2F36;color:var(--kit-ground)}
+.kit-board.on-ink .kit-chip.outline{background:transparent;box-shadow:inset 0 0 0 calc(2 * var(--u)) currentColor}
+
+/* ——— IMAGE COVERS ————————————————————————————————————————————————————————
+   Two cases, and they are NOT interchangeable:
+   .kit-imgwin  a full photograph, cropped to an organic shape. Text never sits on it.
+   .kit-diecut  a cut-out object on the bare ground, with air. No mask, no frame, no shadow. */
+.kit-imgwin{position:absolute;overflow:hidden;border-radius:var(--kit-organic-card)}
+.kit-imgwin.blob{border-radius:62% 38% 55% 45% / 48% 55% 45% 52%}
+.kit-imgwin.soft{border-radius:calc(90 * var(--u)) calc(70 * var(--u)) calc(96 * var(--u)) calc(64 * var(--u))}
+.kit-diecut{position:absolute;display:flex;align-items:flex-end;justify-content:center}
+.kit-diecut image-slot{--slot-bg:transparent}
+image-slot{font-family:var(--kit-font-body)}
+.kit-meta{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline;margin-bottom:14px;max-width:900px}
+.kit-meta h3{font-family:var(--kit-font-display);font-weight:400;font-size:19px;margin:0}
+.kit-meta code{font-size:12px;color:var(--kit-text-meta);background:var(--kit-ground-3);padding:3px 9px;border-radius:99px}
+.kit-meta p{font-size:13px;color:var(--kit-text-secondary);margin:0;flex:1 1 340px;min-width:240px}
+
+/* ——— Units ———
+   PLACEMENT RULE FOR .kit-line — do not hand-tune these offsets by eye.
+   Every curve on this page is placed by solving geometry: the traced path (assets/brand/
+   enclosing-line.json) is centred on the union of the board's real glyph boxes + mark box and
+   scaled until the stroke clears them by >= 48px at a 1080px canvas (scaled per canvas).
+   Acceptance test: sample the rendered path with getPointAtLength(), map through the img box,
+   and require min distance to every glyph line box (Range.getClientRects) >= that clearance.
+   A tweaked-by-hand offset will pass the eye at preview scale and fail at 100%.
+
+   SAME RULE FOR .kit-dot — accents are solved, not eyeballed. Constraints, all asserted:
+   fully inside the canvas; >= 24px (at 1080) from every glyph box, chip and CTA; >= K-height
+   from the mark; >= 40px from the curve stroke; >= 100px between accents; one accent per band
+   (top / bottom / left / right, rotating per board) so they read as PLACED, not scattered.
+   An accent that cannot satisfy all of it is shrunk, then dropped — fewer accents is on-brand.
+   --u  = 1px at a 1080px-WIDE canvas   → horizontal geometry only
+   --uv = 1px at a 1350px-TALL canvas   → vertical offsets and zone heights
+   Portrait 1080-wide boards read u = uv = 1, so both are plain px there.
+   IMPORTANT: on a wide, short canvas u > 1, so vertical offsets, zone heights and type sizes
+   written in --u inflate past the board height (which is overflow:hidden). Landscape boards
+   therefore set vertical geometry and type in PLAIN PX chosen for that canvas — see the two
+   Facebook covers. Rule when adding a board: zone.top + zone.height must be <= --h, and the
+   zone's content must fit inside it. ——— */
+
+/* ——— The content frame ——— */
+.kit-bleed{position:absolute;inset:calc(88 * var(--u))}                /* nothing touches the canvas edge */
+.kit-bleed.tight{inset:calc(64 * var(--u))}
+/* max-width:none is load-bearing: the global img{max-width:100%} in tokens/base.css would clamp
+   an oversized curve to the board width, letterbox the SVG and silently break its placement. */
+.kit-line{position:absolute;pointer-events:none;max-width:none;max-height:none}
+.kit-typezone{position:absolute;display:flex;flex-direction:column;justify-content:center;gap:calc(28 * var(--u))}
+.kit-mark{position:absolute;left:calc(88 * var(--u));bottom:calc(80 * var(--u));display:flex;align-items:center;gap:calc(20 * var(--u))}
+/* Requirement: the WORDMARK ONLY sits at the foot of every page — no dots, no enclosing
+   line, no descriptor. The full lockup appears only on a multi-page post’s final logo page. */
+.kit-mark img{width:calc(300 * var(--u));height:auto;display:block}
+.kit-mark .kit-heart{width:calc(30 * var(--u))}
+.kit-mark-r{left:auto;right:calc(88 * var(--u))}
+
+/* ——— Type on canvas. Thai leading never below 1.5 in body, 1.28 in display. ——— */
+.kit-board .eyebrow{font-size:calc(28 * var(--u));line-height:1.4;font-weight:500;letter-spacing:0.02em;color:var(--kit-ink-70)}
+.kit-board .kicker{font-size:calc(30 * var(--u));line-height:1.5;color:var(--kit-ink-70)}
+.kit-board .head{font-family:var(--kit-font-display);font-weight:300;font-size:calc(78 * var(--u));line-height:1.3}
+.kit-board .head-sm{font-family:var(--kit-font-display);font-weight:300;font-size:calc(58 * var(--u));line-height:1.34}
+.kit-board .head-xl{font-family:var(--kit-font-display);font-weight:300;font-size:calc(104 * var(--u));line-height:1.24}
+.kit-board .body{font-size:calc(38 * var(--u));line-height:1.65}
+.kit-board .body-sm{font-size:calc(32 * var(--u));line-height:1.62}
+.kit-board .body-xs{font-size:calc(27 * var(--u));line-height:1.6}
+.kit-board .meta{font-size:calc(26 * var(--u));line-height:1.5;color:var(--kit-ink-70)}
+.kit-board p{margin:0;text-align:start;text-wrap:pretty}
+.kit-board .lat{font-size:0.94em}
+.kit-board ol,.kit-board ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:calc(24 * var(--u))}
+.kit-board li{display:flex;gap:calc(20 * var(--u));font-size:calc(36 * var(--u));line-height:1.6}
+.kit-board li b{flex:0 0 auto;font-weight:500;color:var(--kit-ink-70);font-variant-numeric:tabular-nums}
+
+/* ——— Accents: always behind content, never under type ——— */
+.kit-dot{position:absolute;border-radius:50%}
+.kit-dot.b1{border-radius:62% 38% 55% 45% / 48% 55% 45% 52%}
+.kit-dot.b2{border-radius:38% 62% 45% 55% / 58% 42% 58% 42%}
+.kit-dot.b3{border-radius:50% 50% 40% 60% / 60% 45% 55% 40%}
+.kit-sage{background:var(--kit-sage-500)}.kit-sand{background:var(--kit-sand-500)}
+.kit-slate{background:var(--kit-slate-500)}.kit-peach{background:var(--kit-peach-500)}
+.kit-inkdot{background:var(--kit-ink)}
+.kit-wash{position:absolute;background:var(--kit-sand-100)}
+
+/* ——— Facts block (event template) ——— */
+.kit-facts{display:grid;grid-template-columns:auto 1fr;column-gap:calc(36 * var(--u));row-gap:calc(18 * var(--u))}
+.kit-facts dt{font-size:calc(26 * var(--u));line-height:1.5;color:var(--kit-ink-70)}
+.kit-facts dd{margin:0;font-size:calc(32 * var(--u));line-height:1.5}
+.kit-chip{display:inline-flex;align-items:center;font-size:calc(26 * var(--u));line-height:1.4;font-weight:500;padding:calc(12 * var(--u)) calc(28 * var(--u));border-radius:999px;background:var(--kit-sage-100);color:var(--kit-ink)}
+.kit-chip.sand{background:var(--kit-sand-100)}.kit-chip.slate{background:var(--kit-slate-100)}
+.kit-chip.outline{background:transparent;box-shadow:inset 0 0 0 calc(2 * var(--u)) var(--kit-hairline)}
+.kit-chips{display:flex;flex-wrap:wrap;gap:calc(16 * var(--u))}
+.kit-cta{display:inline-flex;align-items:center;justify-content:center;font-size:calc(32 * var(--u));font-weight:500;padding:calc(24 * var(--u)) calc(52 * var(--u));border-radius:999px;background:var(--kit-slate-700);color:var(--kit-ground)}
+.kit-cta.line{background:#06C755;color:#fff}
+.kit-cta.quiet{background:transparent;color:var(--kit-ink);box-shadow:inset 0 0 0 calc(2 * var(--u)) var(--kit-ink)}
+.kit-pager{position:absolute;display:flex;gap:calc(12 * var(--u));align-items:center}
+.kit-pager i{display:block;width:calc(14 * var(--u));height:calc(14 * var(--u));border-radius:50%;background:var(--kit-slate-300)}
+.kit-pager i.on{background:var(--kit-ink)}
+
+/* ——— Guides: safe areas, type-zone budget, tap grids. Toggle off before export. ——— */
+.kit-guide{position:absolute;pointer-events:none;border:calc(3 * var(--u)) dashed rgba(20,24,29,.42);z-index:9}
+.kit-guide span{position:absolute;top:calc(8 * var(--u));left:calc(12 * var(--u));font-size:calc(22 * var(--u));font-weight:500;color:#14181D;background:rgba(253,249,246,.9);padding:calc(4 * var(--u)) calc(12 * var(--u));border-radius:calc(8 * var(--u));font-family:var(--kit-font-body)}
+.kit-guide.warn{border-color:rgba(155,98,83,.6)}
+.kit-guide.grid{border:none;display:grid;z-index:9}
+.kit-guide.grid > i{border:calc(3 * var(--u)) dashed rgba(20,24,29,.42);display:flex;align-items:flex-end;justify-content:flex-start;font-size:calc(26 * var(--u));font-style:normal;color:#14181D;padding:calc(10 * var(--u))}
+body.hide-guides .kit-guide{display:none}
+
+/* ——— Toolbar ——— */
+.kit-tools{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 20px;background:rgba(253,249,246,.94);backdrop-filter:blur(8px);box-shadow:0 1px 0 var(--kit-hairline);font-size:13px}
+.kit-tools button{font:inherit;white-space:nowrap;font-weight:500;padding:8px 16px;min-height:36px;border-radius:999px;border:1px solid var(--kit-ink);background:transparent;color:var(--kit-ink);cursor:pointer}
+.kit-tools button[aria-pressed="true"]{background:var(--kit-ink);color:var(--kit-ground)}
+.kit-tools span{color:var(--kit-text-meta)}
+.kit-page{max-width:none;padding:88px 40px 160px}
+.kit-sec{margin:0 0 22px}
+.kit-sec h2{font-family:var(--kit-font-display);font-weight:300;font-size:34px;line-height:1.3;margin:0 0 6px}
+.kit-sec p{max-width:70ch;margin:0;color:var(--kit-text-secondary);font-size:15px;line-height:1.65}
+.kit-hr{margin:72px 0 40px}
+@media print{.kit-tools{display:none}.kit-page{padding:0}}
+
+.kit-tier{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--kit-ink-70);margin:34px 0 14px;font-weight:500}

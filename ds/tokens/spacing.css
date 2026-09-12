@@ -1,0 +1,21 @@
+/* 8px base, with a 4px half-step. Space is the brand (pillar 1) — when in doubt, go up a step. */
+:root{
+  --kit-space-0:0; /* @kind spacing */
+  --kit-space-1:4px;
+  --kit-space-2:8px;
+  --kit-space-3:12px;
+  --kit-space-4:16px;
+  --kit-space-5:24px;
+  --kit-space-6:32px;
+  --kit-space-7:48px;
+  --kit-space-8:64px;
+  --kit-space-9:96px;
+  --kit-space-10:128px;
+  --kit-space-11:160px;   /* social-artboard outer bleed at 1080px wide */
+
+  --kit-gutter:var(--kit-space-5);
+  --kit-section-y:var(--kit-space-9);
+  --kit-card-pad:var(--kit-space-6);
+  --kit-hit-min:44px;     /* minimum tap target, all platforms */
+  --kit-air-min:24px;     /* people-dots: minimum air around every shape, at 1080px canvas */
+}

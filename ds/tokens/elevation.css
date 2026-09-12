@@ -1,0 +1,10 @@
+/* This brand is flat. Elevation exists only to make an overlay legible.
+   Depth is expressed by ground tint and by the hand-drawn line — not by shadow. */
+:root{
+  --kit-elev-0:none;
+  --kit-elev-1:0 1px 0 0 var(--kit-hairline);              /* card "lift": a hairline, not a shadow */
+  --kit-elev-2:0 8px 24px -12px rgba(20,24,29,.10);        /* dropdowns, popovers */
+  --kit-elev-3:0 24px 64px -28px rgba(20,24,29,.16);       /* modals only */
+  --kit-inset-quiet:inset 0 0 0 1px var(--kit-hairline);
+  --kit-focus:0 0 0 3px var(--kit-ground), 0 0 0 5px var(--kit-focus-ring);
+}

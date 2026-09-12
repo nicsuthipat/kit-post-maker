@@ -1,0 +1,32 @@
+/* KIT type. Thai-primary. Two families, no more.
+   NON-NEGOTIABLE THAI RULES, encoded as tokens:
+   · Thai body leading is 1.6 (never below 1.5) — Thai stacks upper vowels + tone marks and
+     lower vowels; tight leading makes marks from adjacent lines collide.
+   · letter-spacing is 0 or POSITIVE, never negative — negative tracking breaks glyph clusters.
+   · never justify Thai (no inter-word spaces) — text-align:left/start only.
+   · the script logo is a logotype, never a font. There is no "handwriting" text style. */
+:root{
+  --kit-font-display:"Mitr","IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
+  --kit-font-body:"IBM Plex Sans Thai","Noto Sans Thai",system-ui,sans-serif;
+  --kit-font-alt-display:"IBM Plex Sans Thai Looped","IBM Plex Sans Thai",sans-serif; /* runner-up */
+
+  /* size / line-height / weight per step. rem assumes 16px root. */
+  --kit-fs-display:4rem;      /* 64px */ --kit-lh-display:1.28; /* @kind other */  --kit-fw-display:300; /* @kind other */
+  --kit-fs-h1:2.75rem;        /* 44px */ --kit-lh-h1:1.32; /* @kind other */       --kit-fw-h1:300; /* @kind other */
+  --kit-fs-h2:2rem;           /* 32px */ --kit-lh-h2:1.4; /* @kind other */        --kit-fw-h2:400; /* @kind other */
+  --kit-fs-h3:1.5rem;         /* 24px */ --kit-lh-h3:1.45; /* @kind other */       --kit-fw-h3:400; /* @kind other */
+  --kit-fs-body-lg:1.1875rem; /* 19px */ --kit-lh-body-lg:1.65; /* @kind other */  --kit-fw-body:400; /* @kind other */
+  --kit-fs-body:1.0625rem;    /* 17px */ --kit-lh-body:1.65; /* @kind other */
+  --kit-fs-small:0.9375rem;   /* 15px */ --kit-lh-small:1.6; /* @kind other */
+  --kit-fs-caption:0.8125rem; /* 13px */ --kit-lh-caption:1.55; /* @kind other */  --kit-fw-medium:500; /* @kind other */
+
+  /* Optical size correction for mixed Thai + Latin on one line.
+     At equal px, Thai reads ~6% smaller than IBM Plex Latin; bump the Latin run down, not
+     the Thai up (raising Thai eats the leading the tone marks need). */
+  --kit-latin-optical:0.94em; /* @kind other */
+
+  --kit-tracking-none:0; /* @kind other */
+  --kit-tracking-open:0.02em; /* @kind other */   /* Latin small-caps/labels only. NEVER on Thai. */
+  --kit-measure:34ch; /* @kind other */           /* comfortable Thai measure */
+  --kit-measure-wide:46ch; /* @kind other */
+}
